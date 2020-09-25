@@ -3,6 +3,7 @@ extern crate oboeta;
 use std::io;
 
 use oboeta::console::prompt_answer;
+use oboeta::console::write_mistake;
 use oboeta::console::write_question;
 
 use oboeta::card::Card;
@@ -28,6 +29,30 @@ fn main() -> io::Result<()>
             answer_prefix:   "平仮名".to_string(),
             answer:          "にほん".to_string(),
         },
+        Card{
+            question_prefix: "漢字".to_string(),
+            question:        "今日".to_string(),
+            answer_prefix:   "平仮名".to_string(),
+            answer:          "きょう".to_string(),
+        },
+        Card{
+            question_prefix: "漢字".to_string(),
+            question:        "日本語".to_string(),
+            answer_prefix:   "平仮名".to_string(),
+            answer:          "にほんご".to_string(),
+        },
+        Card{
+            question_prefix: "漢字".to_string(),
+            question:        "人".to_string(),
+            answer_prefix:   "平仮名".to_string(),
+            answer:          "ひと".to_string(),
+        },
+        Card{
+            question_prefix: "漢字".to_string(),
+            question:        "木".to_string(),
+            answer_prefix:   "平仮名".to_string(),
+            answer:          "き".to_string(),
+        },
     ];
 
     let stdin_handle = io::stdin();
@@ -38,7 +63,10 @@ fn main() -> io::Result<()>
 
     for card in cards {
         write_question(&mut stdout, &card)?;
-        prompt_answer(&mut stdout, &mut stdin, &card)?;
+        let answer = prompt_answer(&mut stdout, &mut stdin, &card)?;
+        if answer != card.answer {
+            write_mistake(&mut stdout, &card)?;
+        }
     }
 
     Ok(())
