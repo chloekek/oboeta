@@ -10,50 +10,10 @@ use oboeta::card::Card;
 
 fn main() -> io::Result<()>
 {
-    let cards = &[
-        Card{
-            question_prefix: "漢字".to_string(),
-            question:        "覚える".to_string(),
-            answer_prefix:   "平仮名".to_string(),
-            answer:          "おぼえる".to_string(),
-        },
-        Card{
-            question_prefix: "漢字".to_string(),
-            question:        "食べる".to_string(),
-            answer_prefix:   "平仮名".to_string(),
-            answer:          "たべる".to_string(),
-        },
-        Card{
-            question_prefix: "漢字".to_string(),
-            question:        "日本".to_string(),
-            answer_prefix:   "平仮名".to_string(),
-            answer:          "にほん".to_string(),
-        },
-        Card{
-            question_prefix: "漢字".to_string(),
-            question:        "今日".to_string(),
-            answer_prefix:   "平仮名".to_string(),
-            answer:          "きょう".to_string(),
-        },
-        Card{
-            question_prefix: "漢字".to_string(),
-            question:        "日本語".to_string(),
-            answer_prefix:   "平仮名".to_string(),
-            answer:          "にほんご".to_string(),
-        },
-        Card{
-            question_prefix: "漢字".to_string(),
-            question:        "人".to_string(),
-            answer_prefix:   "平仮名".to_string(),
-            answer:          "ひと".to_string(),
-        },
-        Card{
-            question_prefix: "漢字".to_string(),
-            question:        "木".to_string(),
-            answer_prefix:   "平仮名".to_string(),
-            answer:          "き".to_string(),
-        },
-    ];
+    let paths = &["cards/kanji-words.txt",
+                  "cards/kanji-kunyomi.txt",
+                  "cards/kanji-onyomi.txt"];
+    let cards = Card::from_files(paths)?;
 
     let stdin_handle = io::stdin();
     let stdout_handle = io::stdout();
