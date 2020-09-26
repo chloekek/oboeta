@@ -1,4 +1,5 @@
 extern crate oboeta;
+extern crate rand;
 
 use std::io;
 
@@ -8,6 +9,7 @@ use oboeta::console::write_mistake;
 use oboeta::console::write_question;
 
 use oboeta::card::Card;
+use rand::seq::SliceRandom;
 use std::io::Write;
 
 fn main() -> io::Result<()>
@@ -15,7 +17,10 @@ fn main() -> io::Result<()>
     let paths = &["cards/kanji-words.txt",
                   "cards/kanji-kunyomi.txt",
                   "cards/kanji-onyomi.txt"];
-    let cards = Card::from_files(paths)?;
+    let mut cards = Card::from_files(paths)?;
+
+    let mut rng = rand::thread_rng();
+    cards.shuffle(&mut rng);
 
     let stdin_handle = io::stdin();
     let stdout_handle = io::stdout();
