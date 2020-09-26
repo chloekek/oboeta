@@ -8,6 +8,7 @@ use oboeta::console::write_mistake;
 use oboeta::console::write_question;
 
 use oboeta::card::Card;
+use std::io::Write;
 
 fn main() -> io::Result<()>
 {
@@ -24,7 +25,9 @@ fn main() -> io::Result<()>
 
     for card in cards {
         clear_screen(&mut stdout)?;
+        write!(stdout, "\n\n\n\n\n\n\n\n\n")?;
         write_question(&mut stdout, &card)?;
+        write!(stdout, "\n\n")?;
         let answer = prompt_answer(&mut stdout, &mut stdin, &card)?;
         if answer != card.answer {
             write_mistake(&mut stdout, &mut stdin, &card)?;
