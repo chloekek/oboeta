@@ -1,6 +1,7 @@
 extern crate oboeta;
 extern crate rand;
 
+use std::env;
 use std::io;
 
 use oboeta::console::clear_screen;
@@ -14,9 +15,7 @@ use std::io::Write;
 
 fn main() -> io::Result<()>
 {
-    let paths = &["cards/kanji-words.txt",
-                  "cards/kanji-kunyomi.txt",
-                  "cards/kanji-onyomi.txt"];
+    let paths = env::args().skip(1);
     let mut cards = Card::from_files(paths)?;
 
     let mut rng = rand::thread_rng();
