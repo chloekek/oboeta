@@ -2,6 +2,7 @@ extern crate oboeta;
 
 use std::io;
 
+use oboeta::console::clear_screen;
 use oboeta::console::prompt_answer;
 use oboeta::console::write_mistake;
 use oboeta::console::write_question;
@@ -22,10 +23,11 @@ fn main() -> io::Result<()>
     let mut stdout = stdout_handle.lock();
 
     for card in cards {
+        clear_screen(&mut stdout)?;
         write_question(&mut stdout, &card)?;
         let answer = prompt_answer(&mut stdout, &mut stdin, &card)?;
         if answer != card.answer {
-            write_mistake(&mut stdout, &card)?;
+            write_mistake(&mut stdout, &mut stdin, &card)?;
         }
     }
 

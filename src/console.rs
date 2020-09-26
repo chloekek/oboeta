@@ -10,6 +10,13 @@ pub const YELLOW: &'static str = "\x1B[33m";
 pub const CYAN: &'static str = "\x1B[36m";
 pub const WHITE: &'static str = "\x1B[37m";
 
+pub fn clear_screen<W: Write>(w: &mut W) -> io::Result<()>
+{
+    write!(w, "\x1Bc")?;
+    w.flush()?;
+    Ok(())
+}
+
 pub fn write_question<W: Write>(w: &mut W, c: &Card) -> io::Result<()>
 {
     // CJK characters are twice as wide.
@@ -62,7 +69,7 @@ pub fn prompt_answer<W: Write, R: BufRead>(w: &mut W, r: &mut R, c: &Card) -> io
     Ok(line)
 }
 
-pub fn write_mistake<W: Write>(w: &mut W, c: &Card) -> io::Result<()>
+pub fn write_mistake<W: Write, R: BufRead>(w: &mut W, r: &mut R, c: &Card) -> io::Result<()>
 {
     // CJK characters are twice as wide.
     // Include extra space for the colon.
@@ -73,9 +80,12 @@ pub fn write_mistake<W: Write>(w: &mut W, c: &Card) -> io::Result<()>
     // Compute padding to center the answer.
     let padding = 80 / 2 - width / 2 - 1;
 
-    // Display prompt with actual answer.
+    // Display actual answer.
     write!(w, "{0: <1$}", "", padding)?;
     writeln!(w, "{0}{1}：{2}{3}", RED, c.answer_prefix, c.answer, RESET)?;
+
+    // Wait for user input.
+    r.read_line(&mut String::new())?;
 
     Ok(())
 }
