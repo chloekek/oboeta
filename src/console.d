@@ -33,12 +33,13 @@ void writeQuestion(ref File w, ref const(Card) c)
 
     // Print the question enclosed in a box.
     w.write(repeat(' ', padding));
-    w.writeln(CYAN, '┌', repeat('─', width), '┐', RESET);
+    w.writefln!"%s┌%s┐%s"(CYAN, repeat('─', width), RESET);
     w.write(repeat(' ', padding));
-    w.writeln(CYAN, '│', WHITE, c.questionPrefix, '：',
-                         YELLOW, c.question, CYAN, '│', RESET);
+    w.writefln!"%s│%s%s：%s%s%s│%s"
+              (CYAN, WHITE, c.questionPrefix,
+               YELLOW, c.question, CYAN, RESET);
     w.write(repeat(' ', padding));
-    w.writeln(CYAN, '└', repeat('─', width), '┘', RESET);
+    w.writefln!"%s└%s┘%s"(CYAN, repeat('─', width), RESET);
 }
 
 wstring promptAnswer(ref File w, ref File r, ref const(Card) c)
@@ -57,7 +58,7 @@ wstring promptAnswer(ref File w, ref File r, ref const(Card) c)
 
     // Display prompt with answer prefix.
     w.write(repeat(' ', padding));
-    w.write(WHITE, c.answerPrefix, '：', YELLOW);
+    w.writef!"%s%s：%s"(WHITE, c.answerPrefix, YELLOW);
     w.flush();
 
     // Accept input into string.
@@ -85,7 +86,7 @@ void writeMistake(ref File w, ref File r, ref const(Card) c)
 
     // Display actual answer.
     w.write(repeat(' ', padding));
-    w.writeln(RED, c.answerPrefix, '：', c.answer, RESET);
+    w.writefln!"%s%s：%s%s"(RED, c.answerPrefix, c.answer, RESET);
 
     // Wait for user input.
     r.readln();

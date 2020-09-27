@@ -33,29 +33,21 @@ void main(const(string)[] args)
     clearScreen(stdout);
 
     foreach (card; correct)
-        stdout.writeln(
+        stdout.writefln!"%s正解、%s：%s、%s：%s%s"(
             console.GREEN,
-            "正解、",
             card.questionPrefix,
-            '：',
             card.question,
-            '、',
             card.answerPrefix,
-            '：',
             card.answer,
             console.RESET,
         );
 
     foreach (card; incorrect)
-        stdout.writeln(
+        stdout.writefln!"%s不正解、%s：%s、%s：%s%s"(
             console.RED,
-            "不正解、",
             card.questionPrefix,
-            '：',
             card.question,
-            '、',
             card.answerPrefix,
-            '：',
             card.answer,
             console.RESET,
         );
