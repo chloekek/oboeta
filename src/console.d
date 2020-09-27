@@ -12,6 +12,19 @@ enum YELLOW = "\x1B[33m";
 enum CYAN   = "\x1B[36m";
 enum WHITE  = "\x1B[37m";
 
+/++
+ + Compute the width of a string in terminal columns.
+ +/
+private pure @safe
+size_t strwidth(scope const(wchar)[] s)
+{
+    // TODO: Use Unicode property “East Asian Width”.
+    import std.algorithm : map, sum;
+    return s.map!(c => (c >= 'a' && c <= 'z') ||
+                       (c >= 'A' && c <= 'Z')
+                       ? 1 : 2).sum;
+}
+
 void clearScreen(ref File w)
 {
     w.write(CLEAR);
@@ -22,10 +35,9 @@ void writeQuestion(ref File w, ref const(Card) c)
 {
     import std.range : repeat;
 
-    // CJK characters are twice as wide.
     // Include extra space for the colon.
-    const width = 2 * c.questionPrefix.length
-                + 2 * c.question.length
+    const width = strwidth(c.questionPrefix)
+                + strwidth(c.question)
                 + 2;
 
     // Compute padding to center the question.
@@ -47,10 +59,9 @@ wstring promptAnswer(ref File w, ref File r, ref const(Card) c)
     import std.range : repeat;
     import std.utf : toUTF16;
 
-    // CJK characters are twice as wide.
     // Include extra space for the colon.
-    const width = 2 * c.answerPrefix.length
-                + 2 * c.answer.length
+    const width = strwidth(c.answerPrefix)
+                + strwidth(c.answer)
                 + 2;
 
     // Compute padding to center the answer.
@@ -77,8 +88,8 @@ void writeMistake(ref File w, ref File r, ref const(Card) c)
 
     // CJK characters are twice as wide.
     // Include extra space for the colon.
-    const width = 2 * c.answerPrefix.length
-                + 2 * c.answer.length
+    const width = strwidth(c.answerPrefix)
+                + strwidth(c.answer)
                 + 2;
 
     // Compute padding to center the answer.
