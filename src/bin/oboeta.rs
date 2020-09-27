@@ -1,6 +1,7 @@
 extern crate oboeta;
 extern crate rand;
 
+use oboeta::console;
 use std::env;
 use std::io;
 
@@ -27,15 +28,49 @@ fn main() -> io::Result<()>
     let mut stdin = stdin_handle.lock();
     let mut stdout = stdout_handle.lock();
 
-    for card in cards {
+    let mut correct   = Vec::new();
+    let mut incorrect = Vec::new();
+
+    for card in cards.iter() {
         clear_screen(&mut stdout)?;
         write!(stdout, "\n\n\n\n\n\n\n\n\n")?;
-        write_question(&mut stdout, &card)?;
+        write_question(&mut stdout, card)?;
         write!(stdout, "\n\n")?;
-        let answer = prompt_answer(&mut stdout, &mut stdin, &card)?;
-        if answer != card.answer {
-            write_mistake(&mut stdout, &mut stdin, &card)?;
+        let answer = prompt_answer(&mut stdout, &mut stdin, card)?;
+        if answer == card.answer {
+            correct.push(card);
+        } else {
+            write_mistake(&mut stdout, &mut stdin, card)?;
+            incorrect.push(card);
         }
+    }
+
+    clear_screen(&mut stdout)?;
+
+    for card in correct {
+        writeln!(
+            stdout,
+            "{}正解、{}：{}、{}：{}{}",
+            console::GREEN,
+            card.question_prefix,
+            card.question,
+            card.answer_prefix,
+            card.answer,
+            console::RESET,
+        )?;
+    }
+
+    for card in incorrect {
+        writeln!(
+            stdout,
+            "{}不正解、{}：{}、{}：{}{}",
+            console::RED,
+            card.question_prefix,
+            card.question,
+            card.answer_prefix,
+            card.answer,
+            console::RESET,
+        )?;
     }
 
     Ok(())
