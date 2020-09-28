@@ -21,7 +21,8 @@ size_t strwidth(scope const(wchar)[] s)
     // TODO: Use Unicode property “East Asian Width”.
     import std.algorithm : map, sum;
     return s.map!(c => (c >= 'a' && c <= 'z') ||
-                       (c >= 'A' && c <= 'Z')
+                       (c >= 'A' && c <= 'Z') ||
+                       c == ' '
                        ? 1 : 2).sum;
 }
 

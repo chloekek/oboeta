@@ -1,0 +1,14 @@
+英語　sleep　日本語　お休み
+英語　incorrect answer　日本語　不正解
+英語　world　日本語　世界
+英語　center　日本語　中心
+英語　today　日本語　今日
+英語　Japan　日本語　日本
+英語　Japanese language　日本語　日本語
+英語　time　日本語　時間
+英語　correct answer　日本語　正解
+英語　go　日本語　行く
+英語　look　日本語　見る
+英語　memorize　日本語　覚える
+英語　vegetable　日本語　野菜
+英語　eat　日本語　食べる
